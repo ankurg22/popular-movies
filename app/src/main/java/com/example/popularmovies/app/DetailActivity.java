@@ -1,4 +1,4 @@
-package com.example.popularmovies.app.adapter;
+package com.example.popularmovies.app;
 
 import androidx.appcompat.app.AppCompatActivity;
 import dagger.android.AndroidInjection;

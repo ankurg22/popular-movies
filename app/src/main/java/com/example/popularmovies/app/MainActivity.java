@@ -3,10 +3,8 @@ package com.example.popularmovies.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.example.popularmovies.R;
-import com.example.popularmovies.app.adapter.DetailActivity;
 import com.example.popularmovies.app.adapter.MovieAdapter;
 import com.example.popularmovies.app.adapter.OnItemClickListener;
 import com.example.popularmovies.model.Movie;
