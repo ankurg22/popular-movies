@@ -6,8 +6,10 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 @Entity
-public class Movie {
+public class Movie implements Serializable {
 
     @PrimaryKey
     @NonNull
@@ -19,6 +21,9 @@ public class Movie {
 
     @SerializedName("poster_path")
     private String posterPath;
+
+    @SerializedName("backdrop_path")
+    private String backdropPath;
 
     @SerializedName("overview")
     private String overview;
@@ -32,11 +37,12 @@ public class Movie {
     public Movie() {
     }
 
-    public Movie(@NonNull String id, String originalTitle, String posterPath,
+    public Movie(String id, String originalTitle, String posterPath, String backdropPath,
                  String overview, String voteAverage, String releaseDate) {
         this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
+        this.backdropPath = backdropPath;
         this.overview = overview;
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
@@ -65,6 +71,14 @@ public class Movie {
 
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
     }
 
     public String getOverview() {

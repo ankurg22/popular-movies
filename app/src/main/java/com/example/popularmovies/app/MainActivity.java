@@ -1,10 +1,12 @@
 package com.example.popularmovies.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.example.popularmovies.R;
+import com.example.popularmovies.app.adapter.DetailActivity;
 import com.example.popularmovies.app.adapter.MovieAdapter;
 import com.example.popularmovies.app.adapter.OnItemClickListener;
 import com.example.popularmovies.model.Movie;
@@ -73,11 +75,11 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(Object object) {
-        //TODO add intent to Details activity.
         if (object instanceof Movie) {
             Movie movie = (Movie) object;
-            Log.d("MainActvity", "Item Clicked : " + movie.getOriginalTitle());
-
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(DetailActivity.KEY_EXTRA_MOVIE, movie);
+            startActivity(intent);
         }
     }
 }
