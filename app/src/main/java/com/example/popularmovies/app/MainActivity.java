@@ -2,9 +2,12 @@ package com.example.popularmovies.app;
 
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.example.popularmovies.R;
 import com.example.popularmovies.app.adapter.MovieAdapter;
+import com.example.popularmovies.app.adapter.OnItemClickListener;
+import com.example.popularmovies.model.Movie;
 
 import javax.inject.Inject;
 
@@ -17,7 +20,7 @@ import dagger.android.AndroidInjection;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mMainViewModel.init();
 
         mMainViewModel.getTopRatedMovies().observe(this, movies -> {
-            mMovieAdapter = new MovieAdapter(getApplicationContext(), movies);
+            mMovieAdapter = new MovieAdapter(movies, this);
             mRecyclerView.setAdapter(mMovieAdapter);
         });
     }
@@ -65,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 return 3;
             }
+        }
+    }
+
+    @Override
+    public void onItemClick(Object object) {
+        //TODO add intent to Details activity.
+        if (object instanceof Movie) {
+            Movie movie = (Movie) object;
+            Log.d("MainActvity", "Item Clicked : " + movie.getOriginalTitle());
+
         }
     }
 }

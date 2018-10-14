@@ -1,6 +1,5 @@
 package com.example.popularmovies.app.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    private Context mContext;
+    private OnItemClickListener mListener;
     private List<Movie> mMovieList;
 
-    public MovieAdapter(Context mContext, List<Movie> list) {
-        this.mContext = mContext;
+    public MovieAdapter(List<Movie> list, OnItemClickListener listener) {
         this.mMovieList = list;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -36,6 +35,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = mMovieList.get(position);
         holder.bind(movie);
+        holder.bindListener(movie, mListener);
     }
 
     @Override
@@ -56,6 +56,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                     .load("http://image.tmdb.org/t/p/w342" + movie.getPosterPath())
                     .placeholder(android.R.drawable.ic_media_play)
                     .into(posterImage);
+        }
+
+        void bindListener(Movie movie, OnItemClickListener listener) {
+            posterImage.setOnClickListener(v -> listener.onItemClick(movie));
         }
     }
 }
