@@ -38,4 +38,21 @@ public class MovieRepository {
         });
         return data;
     }
+
+    public LiveData<List<Movie>> getPopularMovies() {
+        MutableLiveData<List<Movie>> data = new MutableLiveData<>();
+        mApiClient.getPopularMovies().enqueue(new Callback<MovieWrapper>() {
+            @Override
+            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body().getMovies());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MovieWrapper> call, Throwable t) {
+            }
+        });
+        return data;
+    }
 }

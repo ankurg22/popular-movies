@@ -12,22 +12,27 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class MainViewModel extends ViewModel {
-    private LiveData<List<Movie>> mTopRatedMovies;
+    private LiveData<List<Movie>> mMovies;
     private MovieRepository mMovieRepo;
+    private int mListChoice = 0;
 
     @Inject
     public MainViewModel(MovieRepository movieRepo) {
         this.mMovieRepo = movieRepo;
     }
 
-    public void init() {
-        if (this.mTopRatedMovies != null) {
-            return;
+    public LiveData<List<Movie>> getMovies() {
+        switch (mListChoice) {
+            case 0:
+                return mMovieRepo.getTopRatedMovies();
+            case 1:
+                return mMovieRepo.getPopularMovies();
+            default:
+                return mMovieRepo.getPopularMovies();
         }
-        mTopRatedMovies = mMovieRepo.getTopRatedMovies();
     }
 
-    public LiveData<List<Movie>> getTopRatedMovies() {
-        return mTopRatedMovies;
+    public void setListChoice(int choice) {
+        mListChoice = choice;
     }
 }
