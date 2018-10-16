@@ -1,5 +1,8 @@
 package com.example.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
@@ -9,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 @Entity
-public class Movie implements Serializable {
+public class Movie implements Parcelable {
 
     @PrimaryKey
     @NonNull
@@ -47,6 +50,28 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
         this.releaseDate = releaseDate;
     }
+
+    protected Movie(Parcel in) {
+        id = in.readString();
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        backdropPath = in.readString();
+        overview = in.readString();
+        voteAverage = in.readString();
+        releaseDate = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 
     @NonNull
     public String getId() {
@@ -103,5 +128,21 @@ public class Movie implements Serializable {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(originalTitle);
+        dest.writeString(posterPath);
+        dest.writeString(backdropPath);
+        dest.writeString(overview);
+        dest.writeString(voteAverage);
+        dest.writeString(releaseDate);
     }
 }

@@ -5,6 +5,7 @@ import dagger.android.AndroidInjection;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra(KEY_EXTRA_MOVIE)) {
-            mMovie = (Movie) intent.getSerializableExtra(KEY_EXTRA_MOVIE);
+            mMovie = intent.getParcelableExtra(KEY_EXTRA_MOVIE);
         }
 
         initializeViews();
@@ -43,17 +44,26 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateViews() {
-        Picasso p = Picasso.get();
-        p.load(URL_BACKDROP + mMovie.getBackdropPath())
-                .into(mBackgroundImage);
-        p.load(URL_POSTER + mMovie.getPosterPath())
-                .into(mPosterImage);
+        if (mMovie != null) {
+            Picasso p = Picasso.get();
 
-        mTitleText.setText(mMovie.getOriginalTitle());
-        mReleaseText.setText(mMovie.getReleaseDate());
-        mDescriptionText.setText(mMovie.getOverview());
+            if (mMovie.getBackdropPath() != null)
+                p.load(URL_BACKDROP + mMovie.getBackdropPath())
+                        .into(mBackgroundImage);
+            if (mMovie.getPosterPath() != null)
+                p.load(URL_POSTER + mMovie.getPosterPath())
+                        .into(mPosterImage);
 
-        mRating.setRating(Float.valueOf(mMovie.getVoteAverage()));
+            if (mMovie.getOriginalTitle() != null)
+                mTitleText.setText(mMovie.getOriginalTitle());
+            if (mMovie.getReleaseDate() != null)
+                mReleaseText.setText(mMovie.getReleaseDate());
+            if (mMovie.getOverview() != null)
+                mDescriptionText.setText(mMovie.getOverview());
+
+            if (mMovie.getVoteAverage() != null)
+                mRating.setRating(Float.valueOf(mMovie.getVoteAverage()));
+        }
     }
 
     private void initializeViews() {

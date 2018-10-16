@@ -28,8 +28,8 @@ android {
 dependencies {
     def support_version = "1.0.0"
     def lifecycle_version = "2.0.0"
-    def room_version = "2.0.0-rc01"
-    def constraint_version = "2.0.0-alpha2"
+    def room_version = "2.0.0"
+    def constraint_version = "1.1.2"
     def retrofit_version = "2.4.0"
     def dagger_version = "2.15"
     def picasso_version = "2.71828"
