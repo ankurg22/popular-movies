@@ -13,6 +13,9 @@ import com.example.popularmovies.R;
 import com.example.popularmovies.model.Movie;
 import com.squareup.picasso.Picasso;
 
+import static com.example.popularmovies.Constants.URL_BACKDROP;
+import static com.example.popularmovies.Constants.URL_POSTER;
+
 public class DetailActivity extends AppCompatActivity {
     public static final String KEY_EXTRA_MOVIE = "key_movie";
     private Movie mMovie;
@@ -41,9 +44,9 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateViews() {
         Picasso p = Picasso.get();
-        p.load("http://image.tmdb.org/t/p/w780" + mMovie.getBackdropPath())
+        p.load(URL_BACKDROP + mMovie.getBackdropPath())
                 .into(mBackgroundImage);
-        p.load("http://image.tmdb.org/t/p/w342" + mMovie.getPosterPath())
+        p.load(URL_POSTER + mMovie.getPosterPath())
                 .into(mPosterImage);
 
         mTitleText.setText(mMovie.getOriginalTitle());

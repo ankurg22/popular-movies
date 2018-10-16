@@ -14,6 +14,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static com.example.popularmovies.Constants.URL_POSTER;
+
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private OnItemClickListener mListener;
     private List<Movie> mMovieList;
@@ -53,7 +55,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
         void bind(final Movie movie) {
             Picasso.get()
-                    .load("http://image.tmdb.org/t/p/w342" + movie.getPosterPath())
+                    .load(URL_POSTER + movie.getPosterPath())
                     .placeholder(android.R.drawable.ic_media_play)
                     .into(posterImage);
         }
