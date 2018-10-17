@@ -1,7 +1,7 @@
 package com.example.popularmovies.repository;
 
 import com.example.popularmovies.model.Movie;
-import com.example.popularmovies.model.MovieWrapper;
+import com.example.popularmovies.model.ApiResponse;
 import com.example.popularmovies.remote.ApiClient;
 
 import java.util.List;
@@ -24,16 +24,16 @@ public class MovieRepository {
 
     public LiveData<List<Movie>> getTopRatedMovies() {
         MutableLiveData<List<Movie>> data = new MutableLiveData<>();
-        mApiClient.getTopRatedMovies().enqueue(new Callback<MovieWrapper>() {
+        mApiClient.getTopRatedMovies().enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
-                    data.setValue(response.body().getMovies());
+                    data.setValue(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<MovieWrapper> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
             }
         });
         return data;
@@ -41,16 +41,16 @@ public class MovieRepository {
 
     public LiveData<List<Movie>> getPopularMovies() {
         MutableLiveData<List<Movie>> data = new MutableLiveData<>();
-        mApiClient.getPopularMovies().enqueue(new Callback<MovieWrapper>() {
+        mApiClient.getPopularMovies().enqueue(new Callback<ApiResponse>() {
             @Override
-            public void onResponse(Call<MovieWrapper> call, Response<MovieWrapper> response) {
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful()) {
-                    data.setValue(response.body().getMovies());
+                    data.setValue(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<MovieWrapper> call, Throwable t) {
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
             }
         });
         return data;
