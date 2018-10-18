@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import dagger.android.AndroidInjection;
@@ -13,11 +14,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.popularmovies.R;
 import com.example.popularmovies.app.adapter.OnItemClickListener;
+import com.example.popularmovies.app.adapter.ReviewAdapter;
 import com.example.popularmovies.app.adapter.TrailerAdapter;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.Trailer;
@@ -46,6 +49,7 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
     private RatingBar mRating;
 
     private RecyclerView mTrailerRecycler;
+    private RecyclerView mReviewRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
         if (intent.hasExtra(KEY_EXTRA_MOVIE)) {
             mMovie = intent.getParcelableExtra(KEY_EXTRA_MOVIE);
             mDetailViewModel.setMovie(mMovie);
+            mDetailViewModel.init();
         }
 
         initializeViews();
@@ -93,6 +98,11 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
             mTrailerRecycler.setAdapter(adapter);
         });
 
+        mDetailViewModel.getReviews().observe(this, reviews -> {
+            ReviewAdapter adapter = new ReviewAdapter(reviews);
+            mReviewRecycler.setAdapter(adapter);
+        });
+
     }
 
     private void initializeViews() {
@@ -107,6 +117,11 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
                 StaggeredGridLayoutManager.HORIZONTAL);
         mTrailerRecycler.setLayoutManager(layoutManager);
+
+        mReviewRecycler = findViewById(R.id.rv_detail_review);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,
+                RecyclerView.HORIZONTAL, false);
+        mReviewRecycler.setLayoutManager(linearLayoutManager);
     }
 
     @Override

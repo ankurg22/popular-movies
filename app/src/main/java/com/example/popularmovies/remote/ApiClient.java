@@ -2,6 +2,7 @@ package com.example.popularmovies.remote;
 
 import com.example.popularmovies.model.ApiResponse;
 import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.model.Review;
 import com.example.popularmovies.model.Trailer;
 
 import retrofit2.Call;
@@ -18,4 +19,7 @@ public interface ApiClient {
 
     @GET("/3/movie/{movie_id}/videos")
     Call<ApiResponse<Trailer>> getTrailers(@Path("movie_id") String movieId);
+
+    @GET("/3/movie/{movie_id}/reviews")
+    Call<ApiResponse<Review>> getReviews(@Path("movie_id") String movieId);
 }

@@ -2,6 +2,7 @@ package com.example.popularmovies.repository;
 
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.ApiResponse;
+import com.example.popularmovies.model.Review;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.remote.ApiClient;
 
@@ -69,6 +70,24 @@ public class MovieRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<Trailer>> call, Throwable t) {
+
+            }
+        });
+        return data;
+    }
+
+    public LiveData<List<Review>> getReviews(String movieId) {
+        MutableLiveData<List<Review>> data = new MutableLiveData<>();
+        mApiClient.getReviews(movieId).enqueue(new Callback<ApiResponse<Review>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Review>> call, Response<ApiResponse<Review>> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body().getResults());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Review>> call, Throwable t) {
 
             }
         });
