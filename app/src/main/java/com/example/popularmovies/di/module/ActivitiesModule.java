@@ -1,5 +1,6 @@
 package com.example.popularmovies.di.module;
 
+import com.example.popularmovies.app.DetailActivity;
 import com.example.popularmovies.app.MainActivity;
 
 import dagger.Module;
@@ -10,4 +11,7 @@ public abstract class ActivitiesModule {
 
     @ContributesAndroidInjector()
     abstract MainActivity contributeMainActivity();
+
+    @ContributesAndroidInjector()
+    abstract DetailActivity contributeDetailActivity();
 }

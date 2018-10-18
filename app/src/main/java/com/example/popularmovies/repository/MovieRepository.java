@@ -2,6 +2,7 @@ package com.example.popularmovies.repository;
 
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.ApiResponse;
+import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.remote.ApiClient;
 
 import java.util.List;
@@ -24,16 +25,16 @@ public class MovieRepository {
 
     public LiveData<List<Movie>> getTopRatedMovies() {
         MutableLiveData<List<Movie>> data = new MutableLiveData<>();
-        mApiClient.getTopRatedMovies().enqueue(new Callback<ApiResponse>() {
+        mApiClient.getTopRatedMovies().enqueue(new Callback<ApiResponse<Movie>>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponse<Movie>> call, Response<ApiResponse<Movie>> response) {
                 if (response.isSuccessful()) {
                     data.setValue(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<Movie>> call, Throwable t) {
             }
         });
         return data;
@@ -41,16 +42,34 @@ public class MovieRepository {
 
     public LiveData<List<Movie>> getPopularMovies() {
         MutableLiveData<List<Movie>> data = new MutableLiveData<>();
-        mApiClient.getPopularMovies().enqueue(new Callback<ApiResponse>() {
+        mApiClient.getPopularMovies().enqueue(new Callback<ApiResponse<Movie>>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponse<Movie>> call, Response<ApiResponse<Movie>> response) {
                 if (response.isSuccessful()) {
                     data.setValue(response.body().getResults());
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<Movie>> call, Throwable t) {
+            }
+        });
+        return data;
+    }
+
+    public LiveData<List<Trailer>> getTrailers(String movieId) {
+        MutableLiveData<List<Trailer>> data = new MutableLiveData<>();
+        mApiClient.getTrailers(movieId).enqueue(new Callback<ApiResponse<Trailer>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Trailer>> call, Response<ApiResponse<Trailer>> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body().getResults());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Trailer>> call, Throwable t) {
+
             }
         });
         return data;
