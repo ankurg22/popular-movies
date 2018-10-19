@@ -39,4 +39,16 @@ public class DetailViewModel extends ViewModel {
     public LiveData<List<Review>> getReviews() {
         return mReviews;
     }
+
+    public void addToFavorite() {
+        mMovieRepo.addFavorite(mMovie);
+    }
+
+    public void deleteFavorite(){
+        mMovieRepo.deleteFavorite(mMovie);
+    }
+
+    public LiveData<Movie> isFavorite(){
+        return mMovieRepo.isFavorite(mMovie);
+    }
 }

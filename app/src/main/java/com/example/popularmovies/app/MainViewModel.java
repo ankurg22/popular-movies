@@ -1,15 +1,14 @@
 package com.example.popularmovies.app;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.repository.MovieRepository;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 public class MainViewModel extends ViewModel {
     private LiveData<List<Movie>> mMovies;
@@ -24,12 +23,19 @@ public class MainViewModel extends ViewModel {
     public LiveData<List<Movie>> getMovies() {
         switch (mListChoice) {
             case 0:
-                return mMovieRepo.getTopRatedMovies();
+                mMovies = mMovieRepo.getTopRatedMovies();
+                break;
             case 1:
-                return mMovieRepo.getPopularMovies();
+                mMovies = mMovieRepo.getPopularMovies();
+                break;
+            case 2:
+                mMovies = mMovieRepo.getFavorites();
+                break;
             default:
-                return mMovieRepo.getPopularMovies();
+                mMovies = mMovieRepo.getPopularMovies();
+                break;
         }
+        return mMovies;
     }
 
     public void setListChoice(int choice) {

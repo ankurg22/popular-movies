@@ -12,6 +12,7 @@ import dagger.android.AndroidInjection;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,9 +25,11 @@ import com.example.popularmovies.app.adapter.ReviewAdapter;
 import com.example.popularmovies.app.adapter.TrailerAdapter;
 import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.Trailer;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
@@ -50,6 +53,8 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
 
     private RecyclerView mTrailerRecycler;
     private RecyclerView mReviewRecycler;
+
+    private FloatingActionButton mFavButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,15 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
             mReviewRecycler.setAdapter(adapter);
         });
 
+        mDetailViewModel.isFavorite().observe(this, movie -> {
+            if (movie != null) {
+                mFavButton.setImageResource(R.drawable.ic_fav_fill);
+                mFavButton.setOnClickListener(v -> mDetailViewModel.deleteFavorite());
+            } else {
+                mFavButton.setImageResource(R.drawable.ic_favorite);
+                mFavButton.setOnClickListener(v-> mDetailViewModel.addToFavorite());
+            }
+        });
     }
 
     private void initializeViews() {
@@ -112,6 +126,7 @@ public class DetailActivity extends AppCompatActivity implements OnItemClickList
         mReleaseText = findViewById(R.id.tv_detail_release);
         mDescriptionText = findViewById(R.id.tv_detail_description);
         mRating = findViewById(R.id.rb_detatil_rating);
+        mFavButton = findViewById(R.id.fab_detail_favorite);
 
         mTrailerRecycler = findViewById(R.id.rv_detail_trailer);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,

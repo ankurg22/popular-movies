@@ -1,15 +1,22 @@
 package com.example.popularmovies.di.module;
 
+import android.app.Application;
+
 import com.example.popularmovies.BuildConfig;
+import com.example.popularmovies.data.AppDatabase;
+import com.example.popularmovies.data.MovieDao;
 import com.example.popularmovies.remote.ApiClient;
 import com.example.popularmovies.repository.MovieRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 
+import androidx.room.Room;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
@@ -25,8 +32,34 @@ public class AppModule {
 
     @Provides
     @Singleton
-    MovieRepository provideUserRepository(ApiClient apiClient) {
-        return new MovieRepository(apiClient);
+    MovieRepository provideUserRepository(ApiClient apiClient, MovieDao movieDao, Executor executor) {
+        return new MovieRepository(apiClient, movieDao, executor);
+    }
+
+    @Provides
+    @Singleton
+    ApiClient provideApiClient(Retrofit retrofit) {
+        return retrofit.create(ApiClient.class);
+    }
+
+    @Provides
+    @Singleton
+    AppDatabase provideDatabase(Application application) {
+        return Room.databaseBuilder(application,
+                AppDatabase.class, AppDatabase.DATABASE_NAME)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    MovieDao provideMovieDao(AppDatabase appDatabase) {
+        return appDatabase.movieDao();
+    }
+
+    @Provides
+    @Singleton
+    Executor provideExecutor() {
+        return Executors.newSingleThreadExecutor();
     }
 
 
@@ -48,6 +81,7 @@ public class AppModule {
                 })
                 .build();
     }
+
     private static final String BASE_URL = "https://api.themoviedb.org/3/";
 
     @Provides
@@ -57,11 +91,5 @@ public class AppModule {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
-    }
-
-    @Provides
-    @Singleton
-    ApiClient provideApiClient(Retrofit retrofit){
-        return retrofit.create(ApiClient.class);
     }
 }

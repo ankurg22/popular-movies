@@ -105,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 if (item.isChecked()) item.setChecked(false);
                 else item.setChecked(true);
                 break;
+            case R.id.main_fav_movies:
+                mMainViewModel.setListChoice(2);
+                if (item.isChecked()) item.setChecked(false);
+                else item.setChecked(true);
         }
         loadMovies();
         return super.onOptionsItemSelected(item);

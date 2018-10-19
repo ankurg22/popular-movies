@@ -4,4 +4,6 @@
     <string name="top_rated">Top Rated</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
+    <string name="favorites">My Favorite</string>
+    <string name="details">Movie Detail</string>
 </resources>

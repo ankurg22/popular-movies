@@ -1,13 +1,16 @@
 package com.example.popularmovies.repository;
 
-import com.example.popularmovies.model.Movie;
+import com.example.popularmovies.data.MovieDao;
 import com.example.popularmovies.model.ApiResponse;
+import com.example.popularmovies.model.Movie;
 import com.example.popularmovies.model.Review;
 import com.example.popularmovies.model.Trailer;
 import com.example.popularmovies.remote.ApiClient;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.LiveData;
@@ -19,9 +22,14 @@ import retrofit2.Response;
 @Singleton
 public class MovieRepository {
     private final ApiClient mApiClient;
+    private final MovieDao mMovieDao;
+    private final Executor mExecutor;
 
-    public MovieRepository(ApiClient apiClient) {
+    @Inject
+    public MovieRepository(ApiClient apiClient, MovieDao movieDao, Executor executor) {
         mApiClient = apiClient;
+        mMovieDao = movieDao;
+        mExecutor = executor;
     }
 
     public LiveData<List<Movie>> getTopRatedMovies() {
@@ -92,5 +100,27 @@ public class MovieRepository {
             }
         });
         return data;
+    }
+
+    public LiveData<Movie> isFavorite(Movie movie) {
+        return mMovieDao.isFavorite(movie.getId());
+    }
+
+    public void addFavorite(Movie movie) {
+        mExecutor.execute(() -> {
+            boolean isFavorite = (mMovieDao.isFavorite(movie.getId()).getValue() != null);
+
+            if (!isFavorite) {
+                mMovieDao.insertFavorite(movie);
+            }
+        });
+    }
+
+    public void deleteFavorite(Movie movie) {
+        mExecutor.execute(() -> mMovieDao.deleteFavorite(movie));
+    }
+
+    public LiveData<List<Movie>> getFavorites() {
+        return mMovieDao.getFavorites();
     }
 }
